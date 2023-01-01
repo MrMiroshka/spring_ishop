@@ -24,11 +24,15 @@ public class CartService {
         this.productCart.deleteById(id);
     }
 
+    public void delAllProductBasketById() {
+        this.productCart.deleteByAll();
+    }
+
     public List<Product> putProductToCart(Long id){
         Product product = this.productService.findById(id).get();
         Product productPutToBasket = this.productService.findById(product.getId()).orElseThrow(() ->
                 new ResourceNotFoundException("Такой продукт не найден id - " + product.getId()));
-        productCart.getListProducts().add(productPutToBasket);
+        productCart.addListProduct(productPutToBasket);
         return productCart.getListProducts();
     }
 

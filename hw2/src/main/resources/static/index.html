@@ -15,7 +15,7 @@
         <p></p>
         <input class="form-control" type="number" placeholder="Цена" ng-model="newProductJson.cost">
         <p></p>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-success">Сохранить</button>
     </form>
     <form novalidate ng-submit="loadProducts()">
         <div class="form-floating input-group-sn">
@@ -53,19 +53,33 @@
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
             </td>
             <td>
-                <button class="btn btn-danger" ng-click="aboutProduct(p.id)">Подробнее</button>
+                <button class="btn btn-info" ng-click="aboutProduct(p.id)">Подробнее</button>
             </td>
             <td>
-                <button class="btn btn-danger" ng-click="putBasket(p.id)">Добавить в корзину</button>
+                <button class="btn btn-success" ng-click="putBasket(p.id)">Добавить в корзину</button>
             </td>
         </tr>
         </tbody>
     </table>
     <div id="div_return">
-        <button class="btn btn-danger" ng-click="returnProducts()" .hidden="true">Назад</button>
+        <button class="btn btn-info" ng-click="returnProducts()" .hidden="true">Назад</button>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
 
-    <h3>Список продуктов в корзине</h3>
+    <table class="table table-hover">
+        <tr>
+            <td>
+                <h3>Список продуктов в корзине</h3>
+            </td>
+            <td>
+                <button class="btn btn-danger" ng-click="deletAllProductBasket()">Очистить корзину</button>
+            </td>
+        </tr>
+
+    </table>
     <table class="table table-hover">
         <tr>
             <td>ID</td>

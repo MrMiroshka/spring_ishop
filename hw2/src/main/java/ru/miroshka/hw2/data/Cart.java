@@ -1,13 +1,15 @@
 package ru.miroshka.hw2.data;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
-@Data
 
 public class Cart {
     List<Product> listProducts;
@@ -15,6 +17,16 @@ public class Cart {
     public Cart() {
         listProducts = new ArrayList<>();
     }
+
+    public List<Product> getListProducts() {
+        return Collections.unmodifiableList(this.listProducts);
+    }
+
+
+    public void addListProduct(Product product) {
+        this.listProducts.add(product);
+    }
+
 
     /**
      * Удаляет первый попавшийся продукт в корзине с заданным id
@@ -42,5 +54,12 @@ public class Cart {
         for (Product p : listDelete) {
             listProducts.remove(p);
         }
+    }
+
+    /**
+     * Удаляет все содержимое корзины
+     */
+    public void deleteByAll() {
+        listProducts.clear();
     }
 }

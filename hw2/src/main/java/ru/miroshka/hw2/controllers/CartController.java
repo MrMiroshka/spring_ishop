@@ -44,9 +44,14 @@ public class CartController {
         return new PageImpl<>(listProductDto);
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/delete/{id}")
     public void deleteProductBasket(@PathVariable Long id) {
         this.cartService.delProductBasketById(id);
+    }
+
+    @GetMapping("/delete")
+    public void deleteAllProductBasket() {
+        this.cartService.delAllProductBasketById();
     }
 
 }

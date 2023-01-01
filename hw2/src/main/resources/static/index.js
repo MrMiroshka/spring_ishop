@@ -51,9 +51,24 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
 
 
     $scope.deleteProductBasket = function (productId) {
-        $http.delete(contextPath + '/cart/' + productId)
+
+        $http({
+            url: contextPath + '/cart/delete/' + productId,
+            method: 'GET',
+        })
             .then(function (response) {
-                $scope.loadProducts();
+                $scope.loadProductsBasket();
+            })
+
+    }
+
+    $scope.deletAllProductBasket = function () {
+
+        $http({
+            url: contextPath + '/cart/delete/',
+            method: 'GET',
+        })
+            .then(function (response) {
                 $scope.loadProductsBasket();
             })
     }
