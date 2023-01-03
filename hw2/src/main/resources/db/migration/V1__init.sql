@@ -4,6 +4,8 @@ create table products
     id       bigserial,
     title varchar(30) not null,
     cost int not null,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
     primary key (id)
 );
 

@@ -4,12 +4,13 @@ import org.springframework.stereotype.Component;
 import ru.miroshka.hw2.data.Product;
 import ru.miroshka.hw2.dto.ProductDto;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
 public class ProductConverter {
     public Product dtoToEntity(ProductDto productDto){
-        return new Product(productDto.getId(),productDto.getTitle(),productDto.getCost());
+        return new Product(productDto.getId(),productDto.getTitle(),productDto.getCost(), LocalDateTime.now(),LocalDateTime.now());
     }
 
     public ProductDto entityToDto(Product product){

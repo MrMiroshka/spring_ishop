@@ -21,7 +21,7 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
             url: contextPath + '/cart/',
             method: 'GET',
         }).then(function (response) {
-            $scope.BasketList = response.data.content;
+            $scope.cart = response.data;
         });
     };
 
@@ -43,9 +43,9 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
     }
 
     $scope.putBasket = function (productId) {
-        $http.get(contextPath + '/cart/' + productId)
+        $http.get(contextPath + '/cart/add/' + productId)
             .then(function (response) {
-                $scope.BasketList = response.data.content;
+                $scope.cart = response.data;
             });
     }
 
@@ -55,6 +55,23 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
         $http({
             url: contextPath + '/cart/delete/' + productId,
             method: 'GET',
+        })
+            .then(function (response) {
+                $scope.loadProductsBasket();
+            })
+
+    }
+
+
+    $scope.changeCountProduct = function (productId,count) {
+
+        $http({
+            url: contextPath + '/cart/change',
+            method: 'GET',
+            params: {
+                productId: productId,
+                count: count
+            }
         })
             .then(function (response) {
                 $scope.loadProductsBasket();

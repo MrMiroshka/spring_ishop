@@ -1,17 +1,11 @@
 package ru.miroshka.hw2.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.miroshka.hw2.converters.ProductConverter;
-import ru.miroshka.hw2.data.Product;
-import ru.miroshka.hw2.dto.ProductDto;
+import ru.miroshka.hw2.dto.CartDto;
 import ru.miroshka.hw2.servicies.CartService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart")
@@ -23,35 +17,39 @@ public class CartController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Page<ProductDto> getProductCast(
-    ) {
-        List<Product> listProduct = this.cartService.getProductsFromBasket();
-        List<ProductDto> listProductDto = new ArrayList<>();
-        for (Product p: listProduct) {
-            listProductDto.add(productConverter.entityToDto(p));
-        }
-        return new PageImpl<>(listProductDto);
+    public CartDto getProductsCast() {
+        return this.cartService.getCurrentCart();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/add/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Page<ProductDto> putProductToCast(@PathVariable Long id) {
-        List<Product> listProduct = this.cartService.putProductToCart(id);
-        List<ProductDto> listProductDto = new ArrayList<>();
-        for (Product p: listProduct) {
-            listProductDto.add(productConverter.entityToDto(p));
-        }
-        return new PageImpl<>(listProductDto);
+    public CartDto putProductToCast(@PathVariable Long id) {
+        //List<CartDtoItem> listProductInCart = this.cartService.putProductToCart(id);
+        this.cartService.putProductToCart(id);
+        return this.cartService.getCurrentCart();
     }
 
     @GetMapping("/delete/{id}")
     public void deleteProductBasket(@PathVariable Long id) {
-        this.cartService.delProductBasketById(id);
+        this.cartService.delProductCartById(id);
     }
 
     @GetMapping("/delete")
     public void deleteAllProductBasket() {
         this.cartService.delAllProductBasketById();
+    }
+
+    @GetMapping("/change")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public CartDto putProductToCast(
+            @RequestParam(name = "productId", defaultValue = "0") Long id,
+            @RequestParam(name = "count", defaultValue = "0") int count) {
+        if (count == 1) {
+            this.cartService.putProductToCart(id);
+        } else if (count == -1) {
+            this.cartService.delProductCartOneById(id);
+        }
+        return this.cartService.getCurrentCart();
     }
 
 }
