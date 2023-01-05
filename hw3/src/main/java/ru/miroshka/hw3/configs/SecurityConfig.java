@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .authorizeRequests()
                 .antMatchers("/check_auth").authenticated()
+                .antMatchers("/api/v1/orders").authenticated()
                 .antMatchers("/secured").authenticated()
                 .anyRequest().permitAll()
                 .and()

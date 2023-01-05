@@ -23,6 +23,13 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
             })
     };
 
+    $scope.saveOrder = function (){
+        $http.post(contextPath + '/orders', $scope.user)
+            .then(function (response) {
+                $scope.loadProductsBasket();
+            })
+    };
+
     $scope.tryToAuth = function () {
         $http.post('http://localhost:8888/market/auth', $scope.user)
             .then(function successCallback(response) {
