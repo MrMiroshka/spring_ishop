@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.miroshka.hw3.converters.ProductConverter;
-import ru.miroshka.hw3.dto.CartDto;
+import ru.miroshka.hw3.models.CartDto;
 import ru.miroshka.hw3.servicies.CartService;
 
 @RestController

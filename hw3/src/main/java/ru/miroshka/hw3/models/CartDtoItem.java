@@ -1,4 +1,4 @@
-package ru.miroshka.hw3.dto;
+package ru.miroshka.hw3.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,4 +13,9 @@ public class CartDtoItem {
     private int quantity;
     private int pricePerProduct;
     private int price;
+
+    public void changeQuantity(int delta) {
+        quantity += delta;
+        price =  pricePerProduct * quantity;
+    }
 }

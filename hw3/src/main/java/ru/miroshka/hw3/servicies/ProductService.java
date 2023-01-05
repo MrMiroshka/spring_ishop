@@ -59,7 +59,7 @@ public class ProductService {
 
     public void deleteById(Long id) {
         this.productDao.deleteById(id);
-        this.cartService.deleteByIdAll(id);
+        this.cartService.delProductCartById(id);
     }
 
 

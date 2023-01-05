@@ -2,9 +2,9 @@ package ru.miroshka.hw3.servicies;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ru.miroshka.hw3.dto.CartDto;
+import ru.miroshka.hw3.models.CartDto;
 import ru.miroshka.hw3.data.Product;
-import ru.miroshka.hw3.dto.CartDtoItem;
+import ru.miroshka.hw3.models.CartDtoItem;
 import ru.miroshka.hw3.exceptions.ResourceNotFoundException;
 
 import javax.annotation.PostConstruct;
@@ -56,21 +56,4 @@ public class CartService {
         return productCartDto.getItems();
     }
 
-    public void deleteByIdAll(Long id) {
-        this.productCartDto.deleteByIdAll(id);
-    }
-
-
-   /*
-
-    public CartService(CartDto productCartDto, @Lazy ProductService productService) {
-        this.productCartDto = productCartDto;
-        this.productService = productService;
-    }
-
-    public void deleteByIdAll(Long id) {
-        this.productCartDto.deleteByIdAll(id);
-    }
-
-    */
 }

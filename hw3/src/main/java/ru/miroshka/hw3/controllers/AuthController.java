@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.miroshka.hw3.dto.JwtRequest;
 import ru.miroshka.hw3.dto.JwtResponse;
+import ru.miroshka.hw3.dto.StringResponse;
 import ru.miroshka.hw3.servicies.JwtService;
 import ru.miroshka.hw3.servicies.UserService;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,4 +43,11 @@ public class AuthController {
     public String helloSecurity(){
         return "Hello";
     }
+
+    @GetMapping("/check_auth")
+    public StringResponse checkAuth(Principal principal){
+
+        return new StringResponse(principal.getName());
+    }
+
 }
