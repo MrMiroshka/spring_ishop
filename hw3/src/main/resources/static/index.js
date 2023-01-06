@@ -16,6 +16,16 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
         });
     };
 
+    $scope.loadOrders = function (pageIndex = 1) {
+        $http.get(contextPath + '/orders',$scope.user)
+        $http({
+            url: contextPath + '/orders',
+            method: 'GET',
+        }).then(function (response) {
+            $scope.OrderList = response.data;
+        });
+    };
+
     $scope.checkAuth = function (){
         $http.get('http://localhost:8888/market/check_auth')
             .then(function (response) {
@@ -27,6 +37,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
         $http.post(contextPath + '/orders', $scope.user)
             .then(function (response) {
                 $scope.loadProductsBasket();
+                $scope.loadOrders();
             })
     };
 
@@ -166,6 +177,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     }
 
     $scope.loadProducts();
+    $scope.loadOrders();
     $scope.loadProductsBasket();
 
     const form = document.getElementById('form');
