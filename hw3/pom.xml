@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.miroshka</groupId>
-    <artifactId>hw2</artifactId>
+    <artifactId>hw3</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hw3</name>
     <description>hw3</description>
