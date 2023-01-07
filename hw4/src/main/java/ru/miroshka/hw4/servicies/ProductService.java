@@ -14,6 +14,8 @@ import ru.miroshka.hw4.repositories.specifications.ProductsSpecifications;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,18 @@ public class ProductService {
 
     public List<Product> findAll(){
         return productDao.findAll();
+    }
+
+    public static final Function<Product, Product> functionEntityToSoap = se ->{
+        Product s = new Product();
+        s.setId(se.getId());
+        s.setTitle(se.getTitle());
+        s.setCost(se.getCost());
+        return s;
+    };
+
+    public List<Product> getAllProducts(){
+        return productDao.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
     }
 
 
@@ -50,7 +64,7 @@ public class ProductService {
     public Optional<Product> findById(Long id) {
        // return productDao.findById(id);
         return Optional.ofNullable(productDao.findById(id).orElseThrow(() -> new ResourceNotFoundException
-                ("Такой продукт не найден  id =  " + id)));
+                ("This product not found  id =  " + id)));
     }
 
     public Product addProduct(Product product) {
@@ -66,7 +80,7 @@ public class ProductService {
     @Transactional
     public void changeProduct(Product product) {
         Product productChange = this.productDao.findById(product.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("Такой продукт не найден id - " + product.getId()));
+                new ResourceNotFoundException("This product not found id - " + product.getId()));
         if (product.getCost() != null && product.getCost() > 0) {
             productChange.setCost(product.getCost());
         }
