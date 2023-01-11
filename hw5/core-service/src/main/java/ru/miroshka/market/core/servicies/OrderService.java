@@ -18,10 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-  /*  private final CartService cartService;*/
     private final OrderDao orderDao;
-    private final OrderItemService orderItemService;
-    //добавил
     private final ProductService productService;
     private final CartServiceIntegration cartServiceIntegration;
 
