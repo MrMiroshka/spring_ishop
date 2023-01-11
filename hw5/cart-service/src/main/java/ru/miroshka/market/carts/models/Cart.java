@@ -1,12 +1,13 @@
 package ru.miroshka.market.carts.models;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import ru.miroshka.market.api.dto.ProductDto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//@Component
+@Component
 @Data
 public class Cart {
     private List<CartItem> items;

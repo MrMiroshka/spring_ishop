@@ -9,6 +9,7 @@ import ru.miroshka.market.core.data.OrderItem;
 import ru.miroshka.market.core.data.User;
 /*import ru.miroshka.market.core.models.CartDto;
 import ru.miroshka.market.core.models.CartDtoItem;*/
+import ru.miroshka.market.core.integrations.CartServiceIntegration;
 import ru.miroshka.market.core.repositories.OrderDao;
 
 import java.util.List;
@@ -22,11 +23,14 @@ public class OrderService {
     private final OrderItemService orderItemService;
     //добавил
     private final ProductService productService;
+    private final CartServiceIntegration cartServiceIntegration;
+
 
 
     @Transactional
     public void createOrder(User user) {
-      CartDto cartDto = null;// TODO получить корзину из карт МС - cartServiceIntegration.getCurrentCart();
+     CartDto cartDto = cartServiceIntegration.getCurrentCart().get();
+
       Order order = new Order();
       order.setUser(user);
       order.setTotalPrice(cartDto.getTotalPrice());
@@ -40,8 +44,7 @@ public class OrderService {
               )
       ).collect(Collectors.toList()));
       orderDao.save(order);
-
-      //TODO cartServiceIntegration.clear();
+      cartServiceIntegration.delAllProductsFromBasket();
 
 /*        CartDto cart = cartService.getCurrentCart();
         Order order = new Order();

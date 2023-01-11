@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.miroshka.market.api.dto.ProductDto;
 
+
 import java.util.Optional;
 
 @Component
