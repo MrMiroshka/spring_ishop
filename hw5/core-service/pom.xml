@@ -8,13 +8,15 @@
         <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.miroshka</groupId>
-    <artifactId>markethw1</artifactId>
+    <groupId>ru.miroshka.market</groupId>
+    <artifactId>core-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>hw</name>
-    <description>hw</description>
+    <name>core-service</name>
+    <description>core-service</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
     </properties>
     <dependencies>
         <dependency>
@@ -54,6 +56,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.miroshka.market</groupId>
+            <artifactId>api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
