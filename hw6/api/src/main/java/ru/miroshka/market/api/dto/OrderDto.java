@@ -1,12 +1,13 @@
 package ru.miroshka.market.api.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class OrderDto {
 
     private Long id;
     private String phone;
-    private int totalPrice;
+    private BigDecimal totalPrice;
     private String address;
     private LocalDateTime createdAt;
 
@@ -26,11 +27,11 @@ public class OrderDto {
         this.phone = phone;
     }
 
-    public int getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -50,7 +51,7 @@ public class OrderDto {
         this.createdAt = createdAt;
     }
 
-    public OrderDto(Long id, String phone, int totalPrice, String address, LocalDateTime createdAt) {
+    public OrderDto(Long id, String phone, BigDecimal totalPrice, String address, LocalDateTime createdAt) {
         this.id = id;
         this.phone = phone;
         this.totalPrice = totalPrice;

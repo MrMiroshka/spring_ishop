@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Data
 @Component
 @AllArgsConstructor
@@ -13,11 +15,11 @@ public class CartItem {
     private Long productId;
     private String productTitle;
     private int quantity;
-    private int pricePerProduct;
-    private int price;
+    private BigDecimal pricePerProduct;
+    private BigDecimal price;
 
     public void changeQuantity(int delta) {
         quantity += delta;
-        price = pricePerProduct * quantity;
+        price = pricePerProduct.multiply(new BigDecimal(quantity));
     }
 }

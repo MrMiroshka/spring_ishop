@@ -12,6 +12,7 @@ import ru.miroshka.market.core.data.Product;
 import ru.miroshka.market.core.repositories.ProductDao;
 import ru.miroshka.market.core.repositories.specifications.ProductsSpecifications;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class ProductService {
     public void changeProduct(Product product) {
         Product productChange = this.productDao.findById(product.getId()).orElseThrow(() ->
                 new ResourceNotFoundException("Такой продукт не найден id - " + product.getId()));
-        if (product.getCost() != null && product.getCost() > 0) {
+        if (product.getCost() != null && product.getCost().compareTo(new BigDecimal(0)) > 0) {
             productChange.setCost(product.getCost());
         }
         if (!product.getTitle().isEmpty() && product.getTitle().length() > 3) {

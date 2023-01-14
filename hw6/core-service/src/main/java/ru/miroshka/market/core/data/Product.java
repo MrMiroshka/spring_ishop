@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -26,7 +27,7 @@ public class Product {
     private String title;
 
     @Column(name = "cost")
-    private Integer cost;
+    private BigDecimal cost;
 
     @CreationTimestamp
     @Column(name = "created_at")

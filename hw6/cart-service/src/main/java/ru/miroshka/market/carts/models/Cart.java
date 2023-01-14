@@ -3,6 +3,8 @@ package ru.miroshka.market.carts.models;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import ru.miroshka.market.api.dto.ProductDto;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @Data
 public class Cart {
     private List<CartItem> items;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     public Cart() {
         this.items = new ArrayList<>();
@@ -35,9 +37,9 @@ public class Cart {
     }
 
     private void recalculate() {
-        totalPrice = 0;
+        totalPrice = new BigDecimal("0.0");
         for (CartItem item : items) {
-            totalPrice += item.getPrice();
+            totalPrice = totalPrice.add(item.getPrice());
         }
     }
 
