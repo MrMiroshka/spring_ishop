@@ -4,15 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.miroshka.market.api.dto.ProductDto;
-import ru.miroshka.market.api.exceptions.AppError;
 import ru.miroshka.market.api.exceptions.ResourceNotFoundException;
-import ru.miroshka.market.api.models.CartDto;
-import ru.miroshka.market.carts.servicies.CartService;
 
 
 import java.util.Optional;

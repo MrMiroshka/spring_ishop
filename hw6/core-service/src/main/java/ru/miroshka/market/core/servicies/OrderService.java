@@ -25,7 +25,7 @@ public class OrderService {
 
     @Transactional
     public void createOrder(String username) {
-     CartDto cartDto = cartServiceIntegration.getCurrentCart().get();
+     CartDto cartDto = cartServiceIntegration.getCurrentCart();
 
       Order order = new Order();
       order.setUsername(username);

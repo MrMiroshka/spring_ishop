@@ -1,4 +1,4 @@
-package ru.miroshka.market.gateway.security;
+package ru.miroshka.market.gateway;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

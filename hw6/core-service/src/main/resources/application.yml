@@ -21,6 +21,12 @@ spring:
   jooq:
     sql-dialect:
 
+integrations:
+  cart-service:
+    url: http://localhost:8889/market-carts/
+    read-timeout: 10000
+    write-timeout: 5000
+    connect-timeout: 5000
 
 CartServiceIntegration-getCurrentCart: /api/v1/cart
 CartServiceIntegration-delAllProductsFromBasket: /api/v1/cart/delete

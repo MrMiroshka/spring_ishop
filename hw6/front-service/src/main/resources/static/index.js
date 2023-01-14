@@ -94,7 +94,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     };
 
     $scope.deleteProduct = function (productId) {
-        $http.delete(contextPath + '/products/' + productId)
+        $http.get(contextPath + '/products/delete/' + productId)
             .then(function (response) {
                 $scope.loadProducts();
                 $scope.loadProductsBasket();
@@ -104,7 +104,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     $scope.aboutProduct = function (productId) {
         $http.get(contextPath + '/products/' + productId)
             .then(function (response) {
-                $scope.ProductsList = response.data;
+                $scope.ProductsList = [response.data];
                 $scope.viewDiv($scope.ProductsList.length);
             })
         console.log(contextPath + '/products/' + productId)
