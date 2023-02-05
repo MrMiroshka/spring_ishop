@@ -2,18 +2,72 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     const contextPath = 'http://localhost:5555/core/api/v1';
     const contextPathCarts = 'http://localhost:5555/cart/api/v1';
 
-    $scope.loadProducts = function (pageIndex = 1) {
+
+    var cont = document.getElementById("pagination");
+    var pageIndex = 1;
+    var countPages = 1;
+    var head = document.getElementById("head");
+    var fine = document.getElementById("fine");
+
+
+    $scope.generatePagesList = function () {
+        $scope.pagesList = [];
+        for (let i = 0; i < countPages; i++) {
+            $scope.pagesList.push(i + 1);
+        }
+    };
+
+    cont.addEventListener("click", function (event) {
+         if (event.target.innerText == "РЎР»РµРґСѓСЋС‰Р°СЏ") {
+            if (pageIndex < countPages) {
+                pageIndex++;
+                $scope.loadProducts();
+            }
+        } else if (event.target.innerText == "РџСЂРµРґС‹РґСѓС‰Р°СЏ") {
+            if (pageIndex > 1) {
+                pageIndex--;
+                $scope.loadProducts();
+            }
+        } else {
+            if( event.target.innerText.length==1) {
+                pageIndex = event.target.innerText;
+                $scope.loadProducts();
+            }
+        }
+
+    });
+
+    $scope.isPaginationHeadOrFine = function () {
+        if (pageIndex == 1) {
+            head.hidden=true;
+            fine.hidden=false;
+        } else if (pageIndex == countPages) {
+            head.hidden=false;
+            fine.hidden=true;
+        }else{
+            head.hidden=false;
+            fine.hidden=false;
+        }
+    };
+
+
+    $scope.loadProducts = function () {
         $http({
             url: contextPath + '/products',
             method: 'GET',
             params: {
                 min_cost: $scope.filter ? $scope.filter.min_cost : null,
                 max_cost: $scope.filter ? $scope.filter.max_cost : null,
-                name_product: $scope.filter ? $scope.filter.name_product : null
+                name_product: $scope.filter ? $scope.filter.name_product : null,
+                p: pageIndex,
+                pageSize: 6
             }
         }).then(function (response) {
+            countPages = response.data.totalPages;
+            $scope.generatePagesList();
             $scope.ProductsList = response.data.content;
             $scope.viewDiv($scope.ProductsList.length);
+            $scope.isPaginationHeadOrFine();
         });
     };
 
@@ -56,7 +110,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
             let payload = JSON.parse(atob(jwt.split('.')[1]));
             let currentTime = parseInt(new Date().getTime() / 1000);
             if (currentTime > payload.exp) {
-                console.log("Токен просрочен!!!");
+                console.log("User not authorization!!!");
                 delete $localStorage.marketUser;
                 $http.defaults.headers.common.Authorization = '';
             }

@@ -38,4 +38,16 @@ create table order_items
 insert into products(title, cost)
 values ('Milk', 80),
        ('Bread', 25),
-       ('Cheese', 300);
+       ('Cheese', 300),
+       ('Cake', 259),
+       ('Apple', 23),
+       ('Tea', 67),
+       ('Water', 5),
+       ('Chocolate', 56),
+       ('Nuts', 187),
+       ('Lemon', 3),
+       ('Banana', 7),
+       ('Watermelon', 101),
+       ('Potato', 32),
+       ('Cucumber',4 )
+       ;

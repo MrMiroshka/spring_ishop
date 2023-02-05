@@ -89,6 +89,26 @@
         </tr>
         </tbody>
     </table>
+    <nav aria-label="Page navigation products">
+        <ul class="pagination pagination-lg justify-content-center" id="pagination">
+            <li  id = "head" class="page-item">
+                <a class="page-link" href="#" tabindex="-1">Предыдущая</a>
+            </li>
+            <li  class="page-item" ng-repeat="pageIndex in pagesList">
+                <a  class="page-link">{{pageIndex}}</a>
+            </li>
+            <li id="fine" class="page-item">
+                <a  class="page-link" href="#">Следующая</a>
+            </li>
+        </ul>
+    </nav>
+    <template>
+        <b-pagination-nav :pages="pages1" use-router></b-pagination-nav>
+    </template>
+    <div class="mt-3">
+        <b-pagination-nav pills size="lg" number-of-pages="10" base-url="#"></b-pagination-nav>
+    </div>
+    <b-pagination-nav :pages="pages1" use-router></b-pagination-nav>
     <div id="div_return">
         <button class="btn btn-info" ng-click="returnProducts()" .hidden="true">Назад</button>
     </div>
