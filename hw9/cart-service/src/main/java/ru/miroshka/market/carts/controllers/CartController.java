@@ -3,11 +3,13 @@ package ru.miroshka.market.carts.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-//import ru.miroshka.market.carts.converters.ProductConverter;
+import ru.miroshka.market.api.dto.StringResponse;
 import ru.miroshka.market.api.models.CartDto;
 import ru.miroshka.market.carts.converters.CartConverter;
-import ru.miroshka.market.carts.models.Cart;
+
 import ru.miroshka.market.carts.servicies.CartService;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cart")
@@ -17,40 +19,60 @@ public class CartController {
     private final CartConverter cartConverter;
 
 
-    @GetMapping
+    @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public CartDto getCurrentCart() {
-        return cartConverter.entityToDto(this.cartService.getCurrentCart());
+    public CartDto getCurrentCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
+        String targetUuid = getCartUuid(username,uuid);
+        return cartConverter.entityToDto(this.cartService.getCurrentCart(targetUuid));
     }
 
-    @GetMapping("/add/{id}")
+    @GetMapping("/{uuid}/add/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public CartDto putProductToCast(@PathVariable Long id) {
-        this.cartService.putProductToCart(id);
-        return cartConverter.entityToDto(this.cartService.getCurrentCart());
+    public CartDto putProductToCast(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid, @PathVariable Long id) {
+        String targetUuid = getCartUuid(username,uuid);
+        this.cartService.putProductToCart(targetUuid, id);
+        return cartConverter.entityToDto(this.cartService.getCurrentCart(targetUuid));
     }
 
-    @GetMapping("/delete/{id}")
-    public void deleteProductBasket(@PathVariable Long id) {
-        this.cartService.delProductCartById(id);
+    @GetMapping("/{uuid}/delete/{id}")
+    public void deleteProductBasket(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid, @PathVariable Long id) {
+        String targetUuid = getCartUuid(username,uuid);
+        this.cartService.delProductCartById(targetUuid, id);
     }
 
-    @GetMapping("/delete")
-    public void deleteAllProductBasket() {
-        this.cartService.delAllProductBasketById();
+    @GetMapping("/{uuid}/delete")
+    public void deleteAllProductBasket(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
+        String targetUuid = getCartUuid(username,uuid);
+        this.cartService.delAllProductBasketById(targetUuid);
     }
 
-    @GetMapping("/change")
+    @GetMapping("/{uuid}/change")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public CartDto putProductToCast(
             @RequestParam(name = "productId", defaultValue = "0") Long id,
-            @RequestParam(name = "count", defaultValue = "0") int count) {
+            @RequestParam(name = "count", defaultValue = "0") int count,
+            @RequestHeader(name = "username", required = false) String username,
+            @PathVariable String uuid) {
+
+        String targetUuid = getCartUuid(username,uuid);
         if (count == 1) {
-            this.cartService.putProductToCart(id);
+            this.cartService.putProductToCart(targetUuid, id);
         } else if (count == -1) {
-            this.cartService.delProductCartOneById(id);
+            this.cartService.delProductCartOneById(targetUuid, id);
         }
-        return cartConverter.entityToDto(this.cartService.getCurrentCart());
+        return cartConverter.entityToDto(this.cartService.getCurrentCart(targetUuid));
     }
 
+    @GetMapping("/generate_uuid")
+    public StringResponse generateUuid(){
+        return new StringResponse(UUID.randomUUID().toString());
+    }
+
+    private String getCartUuid(String username, String uuid) {
+        if (username != null) {
+            return username;
+        }
+
+        return uuid;
+    }
 }

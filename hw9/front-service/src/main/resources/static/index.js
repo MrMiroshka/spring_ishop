@@ -39,6 +39,13 @@
             }
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketUser.token;
         }
+
+        if (!$localStorage.marketGuestId){
+            $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
+                .then(function successCallback(response){
+                $localStorage.marketGuestId = response.data.value;
+            });
+        }
     }
 })();
 

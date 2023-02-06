@@ -18,9 +18,10 @@ public class CartServiceIntegration {
     @Value("${CartServiceIntegration-delAllProductsFromBasket}")
     private String urlDelAllProductsFromBasket;
 
-    public CartDto getCurrentCart() {
+    public CartDto getCurrentCart(String username) {
         CartDto cart =  cartServiceWebClient.get()
-                .uri(urlGetCurrentCart)
+                .uri("/api/v1/cart/0")
+                .header("username",username)
                 .retrieve()
                 .bodyToMono(CartDto.class)
                 .block();
@@ -29,9 +30,10 @@ public class CartServiceIntegration {
     }
 
 
-    public void delAllProductsFromBasket() {
+    public void delAllProductsFromBasket(String username) {
         cartServiceWebClient.get()
-                .uri(urlDelAllProductsFromBasket)
+                .uri("/api/v1/cart/0/delete")
+                .header("username",username)
                 .retrieve()
                 .toBodilessEntity()
                 .block();

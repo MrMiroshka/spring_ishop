@@ -4,7 +4,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
 
     $scope.loadProductsBasket = function (pageIndex = 1) {
         $http({
-            url: contextPathCarts + '/cart/',
+            url: contextPathCarts + '/cart/' + $localStorage.marketGuestId,
             method: 'GET',
         }).then(function (response) {
             $scope.cart = response.data; 
@@ -14,7 +14,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     $scope.deleteProductBasket = function (productId) {
 
         $http({
-            url: contextPathCarts + '/cart/delete/' + productId,
+            url: contextPathCarts + '/cart/'+$localStorage.marketGuestId+'/delete/' + productId,
             method: 'GET',
         })
             .then(function (response) {
@@ -26,7 +26,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     $scope.deletAllProductBasket = function () {
 
         $http({
-            url: contextPathCarts + '/cart/delete/',
+            url: contextPathCarts + '/cart/'+$localStorage.marketGuestId+'/delete/',
             method: 'GET',
         })
             .then(function (response) {
@@ -35,7 +35,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     };
 
     $scope.saveOrder = function () {
-        $http.post(contextPath + '/orders', $scope.user)
+        $http.post(contextPath + '/orders',$scope.user)
             .then(function (response) {
                 $scope.loadProductsBasket();
                 $scope.loadOrders();

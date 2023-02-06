@@ -25,7 +25,7 @@ public class OrderService {
 
     @Transactional
     public void createOrder(String username) {
-     CartDto cartDto = cartServiceIntegration.getCurrentCart();
+     CartDto cartDto = cartServiceIntegration.getCurrentCart(username);
 
       Order order = new Order();
       order.setUsername(username);
@@ -39,8 +39,9 @@ public class OrderService {
                       cartDtoItem.getPrice()
               )
       ).collect(Collectors.toList()));
+
       orderDao.save(order);
-      cartServiceIntegration.delAllProductsFromBasket();
+      cartServiceIntegration.delAllProductsFromBasket(username);
 
 /*        CartDto cart = cartService.getCurrentCart();
         Order order = new Order();

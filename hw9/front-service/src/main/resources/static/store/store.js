@@ -43,7 +43,7 @@ angular.module('market').controller('storeController', function ($scope, $http, 
     };
 
     $scope.putBasket = function (productId) {
-        $http.get(contextPathCarts + '/cart/add/' + productId)
+        $http.get(contextPathCarts + '/cart/'+$localStorage.marketGuestId+'/add/' + productId,$scope.user)
             .then(function (response) {
                 $scope.cart = response.data;
             });

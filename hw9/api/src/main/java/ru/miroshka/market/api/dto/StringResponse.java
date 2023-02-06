@@ -5,7 +5,7 @@ public class StringResponse {
     private String value;
 
     public StringResponse(String name) {
-        this.value = value;
+        this.value = name;
     }
 
     public String getValue() {
