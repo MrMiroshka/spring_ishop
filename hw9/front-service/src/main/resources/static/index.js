@@ -46,7 +46,7 @@ angular.module('market').controller('indexController', function ($rootScope,$sco
     const contextPath = 'http://localhost:5555/core/api/v1';
     const contextPathCarts = 'http://localhost:5555/cart/api/v1';
 
-    $scope.loadOrders = function (pageIndex = 1) {
+    $scope.loadOrders = function () {
         $http.get(contextPath + '/orders', $scope.user)
         $http({
             url: contextPath + '/orders',
@@ -65,6 +65,7 @@ angular.module('market').controller('indexController', function ($rootScope,$sco
                     $localStorage.marketUser = {username: $scope.user.username, token: response.data.token};
                     $scope.user.username = null;
                     $scope.user.password = null;
+                    $scope.loadOrders();
                     $location.path('/');
                 }
             }, function errorCallback(response) {
@@ -76,6 +77,7 @@ angular.module('market').controller('indexController', function ($rootScope,$sco
     $scope.tryToLogout = function () {
         $scope.clearUser();
         $scope.user = null;
+        $scope.OrderList = null;
         $location.path('/');
     };
 
