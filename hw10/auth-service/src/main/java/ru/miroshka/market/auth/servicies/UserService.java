@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.miroshka.market.auth.data.Role;
 import ru.miroshka.market.auth.data.User;
+import ru.miroshka.market.auth.integrations.CartServiceIntegration;
 import ru.miroshka.market.auth.repositories.UserRepository;
 
 import java.util.Collection;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userDao;
     private final RoleService  roleService;
+    private final CartServiceIntegration cartServiceIntegration;;
 
 
     public Optional<User> findByUsername(String username) {
@@ -46,5 +48,8 @@ public class UserService implements UserDetailsService {
         userDao.save(user);
     }
 
+    public void reloadCarts(String from, String to){
+        cartServiceIntegration.reloadCarts(from,to);
+    }
 
 }

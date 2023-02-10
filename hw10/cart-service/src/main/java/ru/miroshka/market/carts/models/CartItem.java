@@ -22,4 +22,5 @@ public class CartItem {
         quantity += delta;
         price = pricePerProduct.multiply(new BigDecimal(quantity));
     }
+
 }

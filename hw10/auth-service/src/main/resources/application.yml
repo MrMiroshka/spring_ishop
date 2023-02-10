@@ -21,6 +21,12 @@ spring:
   jooq:
     sql-dialect:
 
+integrations:
+  cart-service:
+    url: http://localhost:8889/market-carts/
+    read-timeout: 10000
+    write-timeout: 7000
+    connect-timeout: 7000
 
 jwt:
   secret: ag%$45wqag$%asdf@4!q1F$qefw1asdfFFFEaFa23af4t5Gstdretfq2gsdfg$fafda

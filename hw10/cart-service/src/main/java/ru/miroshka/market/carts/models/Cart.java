@@ -23,6 +23,12 @@ public class Cart {
         return Collections.unmodifiableList(items);
     }*/
 
+/*    public void addListCartItem(List<CartItem> productsList) {
+        for (CartItem cartItem: productsList) {
+            this.items.add(cartItem);
+        }
+    }*/
+
     public void addListProduct(ProductDto product) {
         for (CartItem item : items) {
             if (item.getProductId().equals(product.getId())) {

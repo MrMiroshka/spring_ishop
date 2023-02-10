@@ -43,7 +43,7 @@ public class CartController {
     @GetMapping("/{uuid}/delete")
     public void deleteAllProductBasket(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
         String targetUuid = getCartUuid(username,uuid);
-        this.cartService.delAllProductBasketById(targetUuid);
+        this.cartService.delAllProductBasket(targetUuid);
     }
 
     @GetMapping("/{uuid}/change")
@@ -75,4 +75,14 @@ public class CartController {
 
         return uuid;
     }
+
+//@PathVariable String uuid, @PathVariable Long id
+    @GetMapping("/reload_carts/{uuid}/{userid}")
+    public void reloadCarts(@PathVariable String uuid, @PathVariable String userid){
+        if (!uuid.isEmpty()&&!userid.isEmpty()){
+            this.cartService.reloadCarts(uuid,userid);
+        }
+    }
+
+
 }

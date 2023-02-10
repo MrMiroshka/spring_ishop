@@ -2,22 +2,15 @@ package ru.miroshka.market.carts.servicies;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import ru.miroshka.market.api.dto.ProductDto;
-import ru.miroshka.market.api.dto.StringResponse;
 import ru.miroshka.market.api.exceptions.ResourceNotFoundException;
 import ru.miroshka.market.carts.integrations.ProductServiceIntegration;
 import ru.miroshka.market.carts.models.Cart;
 import ru.miroshka.market.carts.models.CartItem;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @Service
@@ -34,6 +27,15 @@ public class CartService {
             redisTemplate.opsForValue().set(targetUuid, new Cart());
         }
         return (Cart) redisTemplate.opsForValue().get(targetUuid);
+    }
+
+    public void  reloadCarts(String from,String to){
+        Cart fromCart = this.getCurrentCart(from);
+        Cart toCart = this.getCurrentCart(to);
+        for (CartItem ci:fromCart.getItems()) {
+            putProductToCart(to,ci.getProductId());
+        }
+        delAllProductBasket(from);
     }
 
 /*    public CartService(@Lazy ProductServiceIntegration productServiceIntegration) {
@@ -54,7 +56,7 @@ public class CartService {
         redisTemplate.opsForValue().set(cartPrefix + uuid, cart);*/
     }
 
-    public void delAllProductBasketById(String uuid) {
+    public void delAllProductBasket(String uuid) {
         execute(uuid, Cart::deleteByAll);
 /*        Cart cart = getCurrentCart(uuid);
         cart.deleteByAll();

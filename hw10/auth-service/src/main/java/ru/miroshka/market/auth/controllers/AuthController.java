@@ -28,8 +28,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/auth")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
+    @PostMapping("/auth/{uuid}")
+    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest,@PathVariable String uuid) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException exp) {
@@ -39,11 +39,12 @@ public class AuthController {
 
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
+        userService.reloadCarts(uuid,authRequest.getUsername());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<?> createAuthToken(@RequestBody RegistrationUserDto registrationUserDto) {
+    @PostMapping("/registration/{uuid}")
+    public ResponseEntity<?> createAuthToken(@RequestBody RegistrationUserDto registrationUserDto,@PathVariable String uuid) {
         if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),
                     "Пароли не совпадают"),HttpStatus.BAD_REQUEST);
@@ -59,6 +60,7 @@ public class AuthController {
         userService.createUser(user);
         UserDetails userDetails = userService.loadUserByUsername(registrationUserDto.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
+        userService.reloadCarts(uuid,user.getUserName());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
