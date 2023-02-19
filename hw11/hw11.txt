@@ -1,0 +1,101 @@
+1) На оф сайте - https://docs.docker.com/desktop/install/windows-install/
+   скачал докер под windows 11 pro
+2)Запустил командную строку от имени администратора
+3)Перешел в каталос с проектом 
+  F:\gb java\3\Разработка интернет-магазина на Spring Framework\Урок 11. Практика\spring-boot-docker\spring-boot-docker
+4) Запустим docker-compose
+	docker-compose up
+	т.к. это наш первый запуск, скачиваются все зависимости.
+	и затем запускаются
+	Запустилось 3 контейнера:
+	 1)postgres-1 (postgres:9.6) 5432:5432
+	 2)redis-1 (крайняя версия) 6739:6739
+	 3)flyway-1 запустился после запуска контейнера с постгресом, отработал и завершил свою работу
+	 
+5) Запускаепм проект и видим, что база данных "resource" не создана - FATAL: database "resource" does not exist
+
+	Исправляем сие, создадим в контейнере с постгресс базу данных "resource":
+		Посмотрим имя контейнера (для этого выкатим список запущенных контейнеров)
+			docker ps
+		
+		Зайдем на в контейнер на psql
+			либо по id
+			docker exec -it 9803d61d1682 psql -U postgres
+			либо по имени
+			docker exec -it spring-boot-docker-postgres-1 psql -U postgres
+			
+		создаем базу "resource"
+			create database resource;
+		
+		подключимся к базе
+			\с resource;
+6) добавил в  application-dev.yml
+	server:
+		port: 5566
+	стартанул приложение
+	
+7) Добавим значение через консоль в таблицу
+		insert into resource (id,resource_value) values(666,'my-value-from-terminal');
+	Проверим, что у нас есть данные в таблице "resource"
+		select * from resource;
+8) Добавим в проект
+	в контроллер
+	@GetMapping("/resource/all")
+    public List<ResourceEntity> createResource() {
+        return resourceService.getResource();
+    }
+	в сервис
+	    public List<ResourceEntity> getResource() {
+        return repository.findAll();
+    }
+	
+	в моделе у поля "id" добавим
+	@Column(name = "id")
+	
+9) Перезапускаем приложение
+10) Открываем браузер и вводим - http://localhost:5566/api/resource/666
+		Получим - [{"id":666,"value":"my-value-from-terminal"}]
+	Открываем браузер и вводим - http://localhost:5566/api/resource/all
+		Получим - [{"id":666,"value":"my-value-from-terminal"}]
+	Открываем браузер и вводим - http://localhost:5566/api/resource?value=value2
+		Получим еще добавленную одну запись - {"id":1,"value":"value2"}
+	Открываем браузер и вводим - http://localhost:5566/api/resource/all
+		Получим список:
+			[{"id":666,"value":"my-value-from-terminal"},{"id":1,"value":"value2"}]
+
+11)останавливаем приложение
+12) в консоли выходим из постгреса - "\q"
+
+	
+
+
+********************************************************************************
+Создадим свою сеть, чтобы контейнеры общались друг с другом
+docker network create -d bridge rbm
+
+Добавим в компос настройку, чтобы наши три контейнера были в одной сети 
+networks:
+  default:
+    name: 'myNet'
+    external: true
+********************************************************************************
+	Захотел упаковать и запустить приложение внутри контейнера 
+	1)	mvn spring-boot:build-image
+	Получил ошибку, не установлен mvn
+		Пришлось скачать версию 3.9, настроить переменные среды.
+	После этого началось ожидание сборки проекта в контейнер
+	
+	2)Запускаем наше приложение внутри контейнера с другим профилем 
+		docker run --name sbd -p 5567:5566 -d -e "SPRING_PROFILES_ACTIVE=dev" spring-boot-docker:0.0.1-SNAPSHOT
+		docker run --name sbd -p 5567:5566 -d -e "SPRING_PROFILES_ACTIVE=dev" --network myNet -e spring.datasource.url=jdbc:postgresql://spring-boot-docker-postgres-1:5432/resource spring-boot-docker:0.0.1-SNAPSHOT
+	Возникла проблема не соответствия скомпилированной версии и джава и той в контейнере где мы ходим запустить приложение
+	пришлось перебилдить на туже версию.
+	
+	
+***********************************************************************************
+ выключаем докер компос (все контейнеры описанные в иструкции (скрипте) - docker-compose.yml, будут остановлены и удалены (в выключенных они не отображаюстся)) - docker-compose down
+ 
+ 
+ Реализовал два способа - 
+ 1, когда все окружение поднимается в контейнере, кроме приложения.
+ 2, когда приложение так же запускается в отдельном контейнере
