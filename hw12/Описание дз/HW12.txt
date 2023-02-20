@@ -1,0 +1,47 @@
+Запустил в докере кейклок на порту 9090
+	docker run -- name keycloak -p 9090:8080 -d -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.3 start-dev
+Создал пользователя
+	Igor Miroshnichenko
+	и присвоил пароль 'igor'
+Создал клиента
+	клиент - 'postman'
+
+Создадим роль для нашего пользователя [скриншот 3]
+	
+
+Подготовку кейклока завершили,
+теперь запросим токен через postman
+	Проверим какие запросы мы можем отправлять кейклоку (серверу авторизации)
+		http://localhost:9090/realms/master/.well-known/openid-configuration
+	Для получения токена сделаем запрос в постмане (по паре логин\пароль)
+		http://localhost:9090/realms/master/protocol/openid-connect/token
+		[{"key":"client_id","value":"postman","description":"","type":"text","enabled":true},{"key":"grant_type","value":"password","description":"","type":"text","enabled":true},{"key":"username","value":"igor","description":"","type":"text","enabled":true},{"key":"password","value":"igor","description":"","type":"text","enabled":true}]
+	
+	Получили token и refresh token [скриншот 4]
+	
+	для тестирования в постмане, что бы не копировать постоянно токен введем глобальную переменную - "access_token"
+	var jsonData = JSON.parse(responseBody);
+	pm.globals.set("access_token", jsonData.access_token);
+	
+	Полученный токен проверим на jwt.io [скриншот 5]
+	
+
+
+Создадим приложение, чтобы проверить получение контента через авторизацию по токену
+
+Сделаем запрос на получение контента по url="http://localhost:9999/api/resource" через postman.
+	В "Headers" указываем Authorization = Bearer{{access_token}}, где access_token - это глобальная переменная, которая содержит 
+	ранее полученный токен
+	Получаем статус ответа 200 ок, а так же сам контент [скриншот 6]
+
+
+Вопросы
+1) Я привильно понимаю - если мы хотим реализоваться регистрацию через кейклок (
+     - нужно в кейклоке открыть доступ к этой форме
+     - в своем приложении в контролллере я обрабатываю свою форму с фронтенда и проксирую на кейклок? Скажем на фронте
+            в личном кабинете у супер админа есть возможность зарегистрировать новых пользователей и раздать им права.
+2) В продакшене как запустить контейнер в докере с кейклоком, но при этом чтоб при каждомм запуске не обнулялись данные по
+    - пользователям
+    - ролям
+    - клиентам
+    - и прочим настройкам
